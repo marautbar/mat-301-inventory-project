@@ -1,7 +1,3 @@
-MAT 301 Inventory Project
-
-Maggie Barker, Amy Lan
-
 We are using mathematical modeling techniques to determine how much gasoline should be delivered to a chain of gasoline stations, and how often deliveries should take place, in order to minimize cost and satisfy demand. In this model, we assume that the only sources of cost are delivery and storage, that the storage cost is proportional to the amount of gasoline stored, and that the delivery cost is constant per delivery.
 
 We use a probabilistic submodel to approximate the daily demand. Using historical data of a particular gas station, we create a frequency table of the number of gallons demanded. From this table, we find the probability of each demand level, and build a cumulative probability table. We graph the cumulative probability histogram and approximate the cumulative probabilities with points, and then create a demand curve using cubic spline interpolation. Then we use the Monte Carlo process to simulate daily demand at a gas station.
