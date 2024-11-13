@@ -17,5 +17,5 @@ figure(1)
 histogram(results(:, 1), 25)
 xlabel("Minimum cost")
 ylabel("Frequency")
-title("Frequency histogram of minimum cost")
+title("Frequency histogram of minimum cost (N = 1000)")
 toc
