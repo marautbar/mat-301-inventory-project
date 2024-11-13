@@ -1,4 +1,5 @@
 MAT 301 Inventory Project
+
 Maggie Barker, Amy Lan
 
 We are using mathematical modeling techniques to determine how much gasoline should be delivered to a chain of gasoline stations, and how often deliveries should take place, in order to minimize cost and satisfy demand. In this model, we assume that the only sources of cost are delivery and storage, that the storage cost is proportional to the amount of gasoline stored, and that the delivery cost is constant per delivery.
