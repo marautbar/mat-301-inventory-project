@@ -151,7 +151,7 @@
 
     We will discuss this output after we take a look at our surface plots.
 
-    Our surface plots are as follows:\\
+    Our surface plots are as follows:
     \begin{itemize}
         \item Figure \ref{fig:surface1} (page \pageref{fig:surface1}): Minimum average daily cost,
         \item Figures \ref{fig:surface2} (page \pageref{fig:surface2}) and \ref{fig:surface21} (page \pageref{fig:surface21}): Days with unfilled demands,
@@ -217,7 +217,7 @@
     Time between deliveries: 25
     Elapsed time is 1.573916 seconds.\end{verbatim}
 
-    The delivery cost, storage cost, and days simulated are constants that we specified. The elapsed time shows that our simulation takes approximately 1.6 seconds to run, which is an important consideration when we want to run multiple simulations. The key insight given here is in lines 4 through 6. This shows that the minimum average daily cost with no unfilled demands is \$40.52 (\texttt{min\_cost}), and this occurs when deliveries of 38,000 gallons (\texttt{`min\_Q`}) take place every 25 days (\texttt{min\_T}). That is excellent information, but we still have one major concern. Every time we run the simulation and optimization process, we get a slightly different result. This variation stems from the randomness in the Monte Carlo demand simulation. The plots look roughly the same, so we will only consider the changes in numerical output. Here are the outputs from eight additional runs:
+    The delivery cost, storage cost, and days simulated are constants that we specified. The elapsed time shows that our simulation takes approximately 1.6 seconds to run, which is an important consideration when we want to run multiple simulations. The key insight given here is in lines 4 through 6. This shows that the minimum average daily cost with no unfilled demands is \$40.52 (\texttt{min\_cost}), and this occurs when deliveries of 38,000 gallons (\texttt{min\_Q}) take place every 25 days (\texttt{min\_T}). That is excellent information, but we still have one major concern. Every time we run the simulation and optimization process, we get a slightly different result. This variation stems from the randomness in the Monte Carlo demand simulation. The plots look roughly the same, so we will only consider the changes in numerical output. Here are the outputs from eight additional runs:
 
     \begin{verbatim}
     Minimum average daily cost: $40.66

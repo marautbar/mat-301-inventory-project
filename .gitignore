@@ -1,4 +1,5 @@
 _minted-document
 *.aux
 *.log
+*.pyg
 *.synctex.gz
