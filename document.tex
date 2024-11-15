@@ -15,12 +15,12 @@
 
     We apply a range of delivery quantities and periods to simulate the average daily cost for each combination of delivery parameters. As we have two independent variables (delivery quantity and time between deliveries) and one dependent variable (average daily cost), we create a multivariable function, and we plot a 3D surface to investigate the effect of delivery parameters on cost. Our goal is to find the minimum value of this function.
 
-    Since we assume the only sources of cost are from delivery and storage, we can reason that a low cost would be achieved by buying a small amount of gas and waiting a long time between deliveries. A minimum cost (\$0) could be achieved by never having any gas delivered, which would obviously not be conducive to a successful business operation. In fact, we would prefer to never run out of gas and be able to fulfill all demands. On the other hand, we don’t want to buy too much gasoline, or buy it too frequently, which would drive up either storage or delivery costs, or both. We would prefer a “happy medium” where we buy just enough gas to fulfill demands. So in our model, we thus modify our cost surface to cut away those combinations of quantity and frequency that result in unfilled demands. Then we find the minimum point on this new cut surface. This minimum point gives us what we are looking for: The quantity of gas to have delivered, and the frequency of delivery, that will result in minimum cost and ensure that all of our demands are fulfilled.
+    Since we assume the only sources of cost are from delivery and storage, we can reason that a low cost would be achieved by buying a small amount of gas and waiting a long time between deliveries. A minimum cost (\$0) could be achieved by never having any gas delivered, which would obviously not be conducive to a successful business operation. In fact, we would prefer to never run out of gas and be able to fulfill all demands. On the other hand, we don’t want to buy too much gasoline, or buy it too frequently, which would drive up either storage or delivery costs, or both. We would prefer a “happy medium” where we buy just enough gas to fulfill demands. So in our model, we thus modify our cost surface to cut away those combinations of quantity and frequency that result in unfilled demands. Then we find the minimum point on this new cut surface. This minimum point gives us what we are looking for: \emph{The quantity of gas to have delivered, and the frequency of delivery, that will result in minimum cost and ensure that all of our demands are fulfilled.}
 
     As there is some randomness involved in the Monte Carlo process used in our simulation, our results are slightly different each time we run the simulation. We run the simulation many times and find the mean and standard deviation of our results. We then plot a histogram of our minimum costs to investigate the statistical distribution of our outcome.
     \pagebreak
     \section*{Methods}
-    We use the table of cumulative probabilities in Table 5.8 on page 206 of the textbook (Giordano, 2014) to start building our probabilistic demand model. We perform a cubic spline interpolation from selected cumulative probability points to create a demand curve that we can use later in our Monte Carlo process. We created a MATLAB script, \texttt{cubicsplines.m}, to perform the interpolation. (Our scripts are included at the end of the document.) We get the following cubic spline polynomials:
+    We use the table of cumulative probabilities in Table 5.8 on page 206 of the textbook (Giordano, 2014) to start building our probabilistic demand model. We perform a cubic spline interpolation from selected cumulative probability points to create a demand curve that we can use later in our Monte Carlo process. We created a MATLAB script, \texttt{cubicsplines.m} (page \pageref{code:cubicsplines}), to perform the interpolation. We get the following cubic spline polynomials:
     \begin{verbatim}
     S1: 750826.2255x^3 + 0.0000x^2 + 4924.9174x + 1000.0000, [0.00, 0.01)
     S2: -1501652.4510x^3 + 67574.3603x^2 + 4249.1738x + 1002.2525, [0.01, 0.03)
@@ -39,13 +39,13 @@
         \caption{Cumulative probability plot, with cubic spline interpolating polynomials superimposed.}
         \label{fig:cubicsplines}
     \end{figure}
-    Then we use another MATLAB script, \texttt{demand.m}, to evaluate our piecewise polynomial function for each random number from 0 to 1. We hardcoded the coefficients that resulted from \texttt{cubicsplines.m} to avoid recalculating the cubic splines every time we run the simulation. Our \texttt{demand} function has the following signature:
+    Then we use another MATLAB script, \texttt{demand.m} (page \pageref{code:demand}), to evaluate our piecewise polynomial function for each random number from 0 to 1. We hardcoded the coefficients that resulted from \texttt{cubicsplines.m} to avoid recalculating the cubic splines every time we run the simulation. Our \texttt{demand} function has the following signature:
     \begin{minted}{matlab}
     function q = demand(x)
     % Calculates demand based on a random variable x
     % x must be a scalar in the interval [0, 1]
     \end{minted}
-    In another MATLAB script, \texttt{inventory.m}, which functions as the core of our model, we perform the actual simulation. Our inventory function has the following signature:
+    In another MATLAB script, \texttt{inventory.m} (page \pageref{code:inventory}), which functions as the core of our model, we perform the actual simulation. Our inventory function has the following signature:
     \begin{minted}[breaklines]{matlab}
     function [c, L, D] = inventory(Q, T, d, s, N)
     % Simulates inventory by Monte Carlo method
@@ -71,7 +71,7 @@
 
     Once we terminate the simulation, we calculate the average daily cost by dividing the total running cost by the number of days simulated, and we return this value, along with the number of days of unfilled demands and the number of gallons unfilled.
 
-    Now we use another MATLAB script, \texttt{optimize.m}, to run our inventory script for a range of different delivery quantities and frequencies. Our \texttt{optimize} function has the following signature:
+    Now we use another MATLAB script, \texttt{optimize.m} (page \pageref{code:optimize}), to run our inventory script for a range of different delivery quantities and frequencies. Our \texttt{optimize} function has the following signature:
     \begin{minted}[breaklines]{matlab}
     function [min_cost, min_Q, min_T] = optimize(d, s, N, plots)
     % Finds optimum delivery quantity in gallons and time between deliveries in days to minimize average daily cost
@@ -121,7 +121,7 @@
 
     We return the coordinates \texttt{min\_cost}, \texttt{min\_Q}, and \texttt{min\_T}, which represent the minimum value of the cost function and the point where it occurs.
 
-    We use a simple script to perform a single simulation, \texttt{singlesimulation.m}. However, there are still two questions we have not answered. How much does each delivery cost? What is our storage cost per gallon? We have assumed these to be constant, but we have not specified what values these constants should have. We used the information given in Project 2 on page 213 (Giordano, 2014) to find reasonable values of \$500 per delivery and \$0.001 per gallon stored. We also decided to run the simulation for 365 days at a time. Finally, we use the MATLAB stopwatch functions \texttt{tic} and \texttt{toc} to time the run of our algorithm.
+    We use a simple script to perform a single simulation, \texttt{singlesimulation.m} (page \pageref{code:singlesimulation}). However, there are still two questions we have not answered. How much does each delivery cost? What is our storage cost per gallon? We have assumed these to be constant, but we have not specified what values these constants should have. We used the information given in Project 2 on page 213 (Giordano, 2014) to find reasonable values of \$500 per delivery and \$0.001 per gallon stored. We also decided to run the simulation for 365 days at a time. Finally, we use the MATLAB stopwatch functions \texttt{tic} and \texttt{toc} to time the run of our algorithm.
 
     \begin{minted}[breaklines]{matlab}
     tic
@@ -134,7 +134,7 @@
     toc
     \end{minted}
 
-    As addressed earlier, there is some variation in our results every time we run the algorithm, so we want to find an average of multiple runs. We do this in our MATLAB script \texttt{multiplesimulations.m}. We want to avoid making surface plots for every single run, so we have an argument in our optimize function to allow us to suppress the plots.  We implemented a stopwatch and a progress indicator while the simulations are running, since it can take quite a while with many iterations. Then we output our results in a matrix, perform a quick statistical summary with the MATLAB \texttt{summary} command, and draw a histogram of our minimum average daily costs to visualize the distribution of our costs, which we might expect to be normal.
+    As addressed earlier, there is some variation in our results every time we run the algorithm, so we want to find an average of multiple runs. We do this in our MATLAB script \texttt{multiplesimulations.m} (page \pageref{code:multiplesimulations}). We want to avoid making surface plots for every single run, so we have an argument in our optimize function to allow us to suppress the plots.  We implemented a stopwatch and a progress indicator while the simulations are running, since it can take quite a while with many iterations. Then we output our results in a matrix, perform a quick statistical summary with the MATLAB \texttt{summary} command, and draw a histogram of our minimum average daily costs to visualize the distribution of our costs, which we might expect to be normal.
 
     Finally, our average values of our minimum average daily cost, and the average values of \texttt{Q} and \texttt{T}, give us a best estimate of how much gasoline we should have delivered and how often to schedule deliveries. The standard deviations of these values give us an idea of the precision of our simulation.
     \section*{Results}
@@ -301,7 +301,7 @@
 
     Elapsed time is 1453.711439 seconds.\end{verbatim}
     \pagebreak
-    Here we see the mean of the minimum average daily costs (N = 1,000) is \$41.19, where the mean gallons per delivery is 38,310.50 gallons, and the mean days between deliveries is 25.63. Thus, it appears that the cost can be minimized by ordering around 38,000-39,000 gallons every 25-26 days, which is in close agreement with our initial run above. We note that the standard deviation of the minimum average daily cost is \$0.81, the standard deviation of gallons per delivery is 3,914.23 gallons, and the standard deviation of time between deliveries is 2.63 days. We also note that the mean (\$41.19) and median (\$41.14) of the minimum average daily cost are approximately equal, indicating that the distribution is not significantly skewed. Finally, we look at a histogram of minimum average daily cost (Figure \ref{fig:histogram}) to see that it is approximately normally distributed.
+    Here we see the mean of the minimum average daily costs (N = 1,000) is \$41.19, where the mean gallons per delivery is 38,310.50 gallons, and the mean days between deliveries is 25.63. Thus, it appears that the cost can be minimized by ordering around 38,000-39,000 gallons every 25-26 days, which is in close agreement with our initial run above. We note that the standard deviation of the minimum average daily cost is \$0.81, the standard deviation of delivery quantity is 3,914.23 gallons, and the standard deviation of delivery period is 2.63 days. We see that the minimum average daily cost is quite precise (with coefficient of variation 1.97\%), while the delivery quantity and period are less precise (with coefficient of variations 10.22\% and 10.26\%, respectively). We also note that the mean (\$41.19) and median (\$41.14) of the minimum average daily cost are approximately equal, indicating that the distribution is not significantly skewed. Finally, we look at a histogram of minimum average daily cost (Figure \ref{fig:histogram}) to see that it is approximately normally distributed.
 
     \begin{figure}[h]
         \centering
@@ -311,21 +311,34 @@
     \end{figure}
     \pagebreak
     \section*{Conclusion}
+    In this project, we utilized a cross-discipline approach to optimize inventory of a chain of gasoline stations. We used historical data to develop a cumulative probability distribution. We combined cubic spline interpolation with a Monte Carlo process to simulate random consumer demand. We created a simple simulation computer algorithm to keep track of inventory over a given time period, with periodic deliveries, and tallied the cost of delivery and storage. We then used the data yielded from our simulation to find the average daily cost as a function of delivery parameters. To ensure that our demands are fulfilled, we filtered out those combinations of delivery parameters that resulted in insufficient inventory. We numerically found the minimum average daily cost, and we performed a graphical analysis to help interpret our result. Finally, we performed a descriptive statistical analysis to analyze the precision of our process.
+
+    There are some areas where we could look to improve our model. For one, we made a simplifying assumption that the only sources of cost incurred are from delivery and storage. In reality, we know that there are many other costs involved in running a gas station, such as property, insurance, staff, taxes, and maintenance, to name a few. Furthermore, we made the implicit assumption that storage is unlimited, when in reality we have a physical limit to our storage capacity. We could modify our algorithm to not exceed a given storage capacity if needed, without greatly complicating our model. However, accounting for all of our other potential sources of cost would make the model impractically complicated.
+
+    We made informed assumptions, but assumptions all the same, on the delivery and storage costs. Given that these vary with the market and are not fixed for all time, we could benefit from performing a sensitivity analysis to determine the effect of changing delivery and storage costs.
+
+    Finally, we assumed that the daily demand follows the same probability distribution every day. This disregards possible time periods when demand may be seasonally higher, such as holidays or summer travel. To account for this, we could modify our algorithm to keep track of the time of year, and weight the demand accordingly. This would add another layer of complexity, but it could be beneficial for gas stations in areas with large seasonal demand fluctuations.
     \pagebreak
     \section*{Scripts}
     Our MATLAB code is listed here, and it is downloadable from the following URL:\\
     https://github.com/marautbar/mat-301-inventory-project
     \subsection*{cubicsplines.m}
+    \label{code:cubicsplines}
     \inputminted[linenos,breaklines]{matlab}{matlab/cubicsplines.m}
     \subsection*{demand.m}
+    \label{code:demand}
     \inputminted[linenos,breaklines]{matlab}{matlab/demand.m}
     \subsection*{inventory.m}
+    \label{code:inventory}
     \inputminted[linenos,breaklines]{matlab}{matlab/inventory.m}
     \subsection*{optimize.m}
+    \label{code:optimize}
     \inputminted[linenos,breaklines]{matlab}{matlab/optimize.m}
     \subsection*{singlesimulation.m}
+    \label{code:singlesimulation}
     \inputminted[linenos,breaklines]{matlab}{matlab/singlesimulation.m}
     \subsection*{multiplesimulations.m}
+    \label{code:multiplesimulations}
     \inputminted[linenos,breaklines]{matlab}{matlab/multiplesimulations.m}
     \pagebreak
     \section*{References}
